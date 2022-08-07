@@ -16,8 +16,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         "Topic :: Utilities",
         'Operating System :: Microsoft',
-        'Operating System :: Microsoft :: Windows :: Windows 10',
-        'Operating System :: Microsoft :: Windows :: Windows 11'
+        'Operating System :: Microsoft :: Windows :: Windows 10'
     ],
     install_requires=['winsdk'],
     py_modules=['win11toast']
