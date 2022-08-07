@@ -20,6 +20,14 @@ from win11toast import toast
 toast('Hello Python', 'Click to open url', on_click='https://www.python.org')
 ```
 
+use callback
+```python
+from win11toast import toast
+
+toast('Hello Python', 'Click to open url', on_click=lambda args: print('clicked!', args))
+# clicked! C:\Windows\Media\Alarm01.wav
+```
+
 ### Jupyter
 
 ```python
@@ -32,6 +40,6 @@ await toast_async('Hello Python', 'Click to open url', on_click='https://www.pyt
 
 # Acknowledgements
 
-- [Windows-Toasts](https://github.com/DatGuy1/Windows-Toasts)
 - [winsdk_toast](https://github.com/Mo-Dabao/winsdk_toast)
+- [Windows-Toasts](https://github.com/DatGuy1/Windows-Toasts)
 - [MarcAlx/notification.py](https://gist.github.com/MarcAlx/443358d5e7167864679ffa1b7d51cd06)
