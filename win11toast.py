@@ -40,40 +40,40 @@ async def toast_async(title='Hello', body='Hello from Python', on_click=print, o
 </toast>
 """
 
-    xDoc = XmlDocument()
-    xDoc.load_xml(tString)
-    notification = ToastNotification(xDoc)
-    event_loop = asyncio.get_running_loop()
-    aws = []
+    document = XmlDocument()
+    document.load_xml(tString)
+    notification = ToastNotification(document)
+    loop = asyncio.get_running_loop()
+    futures = []
 
     if isinstance(on_click, str):
         on_click = print
-    activated_future = event_loop.create_future()
+    activated_future = loop.create_future()
     activated_token = notification.add_activated(
-        lambda _, event_args: event_loop.call_soon_threadsafe(
+        lambda _, event_args: loop.call_soon_threadsafe(
             activated_future.set_result, on_click(
                 ToastActivatedEventArgs._from(event_args).arguments)
         )
     )
-    aws.append(activated_future)
+    futures.append(activated_future)
 
-    dismissed_future = event_loop.create_future()
+    dismissed_future = loop.create_future()
     dismissed_token = notification.add_dismissed(
-        lambda _, event_args: event_loop.call_soon_threadsafe(
+        lambda _, event_args: loop.call_soon_threadsafe(
             dismissed_future.set_result, on_dismissed(ToastDismissedEventArgs._from(event_args).reason))
     )
-    aws.append(dismissed_future)
+    futures.append(dismissed_future)
 
-    failed_future = event_loop.create_future()
+    failed_future = loop.create_future()
     failed_token = notification.add_failed(
-        lambda _, event_args: event_loop.call_soon_threadsafe(
+        lambda _, event_args: loop.call_soon_threadsafe(
             failed_future.set_result, on_failed(ToastFailedEventArgs._from(event_args).error_code))
     )
-    aws.append(failed_future)
+    futures.append(failed_future)
 
     notifier.show(notification)
     try:
-        _, pending = await asyncio.wait(aws, return_when=asyncio.FIRST_COMPLETED)
+        _, pending = await asyncio.wait(futures, return_when=asyncio.FIRST_COMPLETED)
         for p in pending:
             p.cancel()
     finally:
@@ -87,3 +87,8 @@ async def toast_async(title='Hello', body='Hello from Python', on_click=print, o
 
 def toast(*args, **kwargs):
     asyncio.run(toast_async(*args, **kwargs))
+
+
+if __name__ == '__main__':
+    url = 'https://www.python.org'
+    toast('Hello Python', 'Click to open url', on_click=url)
