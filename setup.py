@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='win11toast',
-    version='0.4',
+    version='0.5',
     description='Toast notifications for Windows 10 and 11',
     long_description=open('README.md', encoding='utf-8').read(),
     long_description_content_type='text/markdown',
