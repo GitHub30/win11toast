@@ -2,7 +2,7 @@
 [![PyPI](https://badge.fury.io/py/win11toast.svg)](https://badge.fury.io/py/win11toast)
 
 # win11toast
-Toast notifications for Windows 10 and 11
+Toast notifications for Windows 10 and 11 based on [WinRT](https://docs.microsoft.com/en-us/windows/apps/design/shell/tiles-and-notifications/adaptive-interactive-toasts)
 
 ![image](https://user-images.githubusercontent.com/12811398/183295421-59686d68-bfb2-4d9d-ad61-afc8bd4e4808.png)
 
@@ -29,3 +29,9 @@ await toast_async('Hello Python', 'Click to open url', on_click='https://www.pyt
 ```
 
 ![image](https://user-images.githubusercontent.com/12811398/183295534-82b0a6d1-8fa6-4ddc-bfb0-5021158b3cb0.png)
+
+# Acknowledgements
+
+- [Windows-Toasts](https://github.com/DatGuy1/Windows-Toasts)
+- [winsdk_toast](https://github.com/Mo-Dabao/winsdk_toast)
+- [MarcAlx/notification.py](https://gist.github.com/MarcAlx/443358d5e7167864679ffa1b7d51cd06)
