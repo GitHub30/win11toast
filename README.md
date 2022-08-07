@@ -17,6 +17,12 @@ pip install win11toast
 ```python
 from win11toast import toast
 
+toast('Hello Python')
+```
+
+```python
+from win11toast import toast
+
 toast('Hello Python', 'Click to open url', on_click='https://www.python.org')
 ```
 
