@@ -46,7 +46,7 @@ await toast_async('Hello Python', 'Click to open url', on_click='https://www.pyt
 
 ## Debug
 
-<a href="ms-windows-store://pdp/?ProductId=9NBLGGH5XSL1">Notifications Visualizer</a>
+[Notifications Visualizer](ms-windows-store://pdp/?ProductId=9NBLGGH5XSL1)
 
 # Acknowledgements
 
