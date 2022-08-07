@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='win11toast',
-    version='0.5',
+    version='0.6',
     description='Toast notifications for Windows 10 and 11',
     long_description=open('README.md', encoding='utf-8').read(),
     long_description_content_type='text/markdown',
@@ -16,7 +16,8 @@ setup(
         'License :: OSI Approved :: MIT License',
         "Topic :: Utilities",
         'Operating System :: Microsoft',
-        'Operating System :: Microsoft :: Windows :: Windows 10'
+        'Operating System :: Microsoft :: Windows :: Windows 10',
+        'Operating System :: Microsoft :: Windows :: Windows 11'
     ],
     install_requires=['winsdk'],
     py_modules=['win11toast']
