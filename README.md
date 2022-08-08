@@ -143,6 +143,42 @@ await toast_async('Hello Python', 'Click to open url', on_click='https://www.pyt
 
 ## Debug
 
+```python
+from win11toast import toast
+
+xml = """
+<toast launch="action=openThread&amp;threadId=92187">
+
+    <visual>
+        <binding template="ToastGeneric">
+            <text hint-maxLines="1">Jill Bender</text>
+            <text>Check out where we camped last weekend! It was incredible, wish you could have come on the backpacking trip!</text>
+            <image placement="appLogoOverride" hint-crop="circle" src="https://unsplash.it/64?image=1027"/>
+            <image placement="hero" src="https://unsplash.it/360/180?image=1043"/>
+        </binding>
+    </visual>
+
+    <actions>
+
+        <input id="textBox" type="text" placeHolderContent="reply"/>
+
+        <action
+          content="Send"
+          imageUri="Assets/Icons/send.png"
+          hint-inputId="textBox"
+          activationType="background"
+          arguments="action=reply&amp;threadId=92187"/>
+
+    </actions>
+
+</toast>"""
+
+toast(xml=xml)
+```
+
+![image](https://user-images.githubusercontent.com/12811398/183369144-5007e122-2325-49b3-97d8-100906cd6e56.png)
+
+
 [Notifications Visualizer](https://www.microsoft.com/store/apps/notifications-visualizer/9nblggh5xsl1)
 ![image](https://user-images.githubusercontent.com/12811398/183335533-33562c5c-d467-4acf-92a4-5e8f6ef05e1f.png)
 
