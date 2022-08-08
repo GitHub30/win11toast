@@ -1,10 +1,10 @@
 import asyncio
-from turtle import onclick
 from winsdk.windows.data.xml.dom import XmlDocument
 from winsdk.windows.foundation import IPropertyValue
 from winsdk.windows.ui.notifications import (
     ToastNotificationManager,
     ToastNotification,
+    NotificationData,
     ToastActivatedEventArgs,
     ToastDismissedEventArgs,
     ToastFailedEventArgs
@@ -47,6 +47,14 @@ def add_image(src, document):
     image = document.create_element('image')
     image.set_attribute('src', src)
     binding.append_child(image)
+
+
+def add_progress(prog, document):
+    binding = document.select_single_node('//binding')
+    progress = document.create_element('progress')
+    for name in prog:
+        progress.set_attribute(name, '{' + name + '}')
+    binding.append_child(progress)
 
 
 def add_audio(src, document):
@@ -106,7 +114,7 @@ def activated_args(_, event):
     }
 
 
-async def toast_async(title=None, body=None, on_click=print, on_dismissed=print, on_failed=print, inputs=[], selections=[], actions=[], logo=None, image=None, audio=None, xml=xml):
+async def toast_async(title=None, body=None, on_click=print, logo=None, image=None, progress=None, audio=None, inputs=[], selections=[], actions=[], on_dismissed=print, on_failed=print, xml=xml):
     """
     Notify
     Args:
@@ -150,10 +158,19 @@ async def toast_async(title=None, body=None, on_click=print, on_dismissed=print,
         add_logo(logo, document)
     if image:
         add_image(image, document)
+    if progress:
+        add_progress(progress, document)
     if audio:
         add_audio(audio, document)
 
     notification = ToastNotification(document)
+    if progress:
+        data = NotificationData()
+        for name, value in progress.items():
+            data.values[name] = str(value)
+        data.sequence_number = 1
+        notification.data = data
+        notification.tag = 'my_tag'
     loop = asyncio.get_running_loop()
     futures = []
 
@@ -197,3 +214,11 @@ async def toast_async(title=None, body=None, on_click=print, on_dismissed=print,
 
 def toast(*args, **kwargs):
     asyncio.run(toast_async(*args, **kwargs))
+
+
+def update_progress(progress):
+    data = NotificationData()
+    for name, value in progress.items():
+        data.values[name] = str(value)
+    data.sequence_number = 2
+    return ToastNotificationManager.create_toast_notifier().update(data, 'my_tag')

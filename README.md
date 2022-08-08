@@ -56,6 +56,29 @@ toast('Hello', 'Hello from Python', image='https://4.bp.blogspot.com/-u-uyq3FEqe
 
 ![image](https://user-images.githubusercontent.com/12811398/183360063-36caef94-bb3e-4eef-ac15-d5d6c86e5d40.png)
 
+#### Progress
+
+```python
+from time import sleep
+from threading import Thread
+from win11toast import toast, update_progress
+
+attributes = {
+    'title': 'YouTube',
+    'status': 'Downloading...',
+    'value': '0',
+    'valueStringOverride': '0/15 videos'
+}
+Thread(target=toast, kwargs={'progress': attributes}).start()
+
+for i in range(1, 15+1):
+    sleep(1)
+    update_progress({'value': i/15, 'valueStringOverride': f'{i}/15 videos'})
+```
+
+Attributes
+https://docs.microsoft.com/en-ca/uwp/schemas/tiles/toastschema/element-progress
+
 #### Audio
 
 ```python
