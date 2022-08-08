@@ -101,6 +101,16 @@ toast('Hello', 'Which do you like?', selections=['Apple', 'Banana', 'Grape'], ac
 
 ![image](https://user-images.githubusercontent.com/12811398/183361138-2b81e8aa-bcbf-4764-a396-b7787518904b.png)
 
+#### No arguments
+
+```python
+from win11toast import toast
+
+toast()
+```
+
+![image](https://user-images.githubusercontent.com/12811398/183362441-8d865a74-f930-4c16-9757-22244d22a8e2.png)
+
 
 ### Jupyter
 
