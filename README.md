@@ -47,6 +47,8 @@ await toast_async('Hello Python', 'Click to open url', on_click='https://www.pyt
 ## Debug
 
 [Notifications Visualizer](https://www.microsoft.com/store/apps/notifications-visualizer/9nblggh5xsl1)
+![image](https://user-images.githubusercontent.com/12811398/183335533-33562c5c-d467-4acf-92a4-5e8f6ef05e1f.png)
+
 
 # Acknowledgements
 
