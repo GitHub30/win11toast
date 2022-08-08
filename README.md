@@ -76,6 +76,14 @@ toast('Hello', 'Hello from Python', actions=['Dismiss'])
 
 ![image](https://user-images.githubusercontent.com/12811398/183361855-1269d017-5354-41db-9613-20ad2f22447a.png)
 
+```python
+from win11toast import toast
+
+toast('Hello', 'Click a button', actions=['Approve', 'Dismiss', 'Other'])
+```
+
+![image](https://user-images.githubusercontent.com/12811398/183363035-af9e13cc-9bb1-4e25-90b3-9f6c1c00b3dd.png)
+
 #### Input
 
 ```python
