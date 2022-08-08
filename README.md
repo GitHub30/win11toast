@@ -119,6 +119,15 @@ toast()
 
 ![image](https://user-images.githubusercontent.com/12811398/183362441-8d865a74-f930-4c16-9757-22244d22a8e2.png)
 
+#### Wrap text
+
+```python
+from win11toast import toast
+
+toast('Hello', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum accusantium porro numquam aspernatur voluptates cum, odio in, animi nihil cupiditate molestias laborum. Consequatur exercitationem modi vitae. In voluptates quia obcaecati!')
+```
+
+![image](https://user-images.githubusercontent.com/12811398/183363789-e5a9c2bb-adf8-438d-9ebb-1e7693971a16.png)
 
 ### Jupyter
 
