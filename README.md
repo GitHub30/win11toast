@@ -17,8 +17,10 @@ pip install win11toast
 ```python
 from win11toast import toast
 
-toast('Hello Python')
+toast('Hello Python🐍')
 ```
+
+![image](https://user-images.githubusercontent.com/12811398/183365362-dd163b1d-d01f-4b0e-9592-44bf63c6b4c2.png)
 
 ```python
 from win11toast import toast
