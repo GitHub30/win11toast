@@ -184,6 +184,14 @@ from win11toast import toast
 toast('Hello Python🐍', audio={'silent': 'true'})
 ```
 
+### Speak🗣
+
+```python
+from win11toast import toast
+
+toast('Hello Python🐍', dialogue='Hello world')
+```
+
 ### Long duration
 
 ```python

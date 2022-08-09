@@ -163,7 +163,7 @@ def activated_args(_, event):
 
 async def play_sound(audio):
     from winsdk.windows.media.core import MediaSource
-    from winsdk.windows.media.playback import MediaPlayer, MediaPlaybackItem
+    from winsdk.windows.media.playback import MediaPlayer
 
     if audio.startswith('http'):
         from winsdk.windows.foundation import Uri
@@ -174,12 +174,26 @@ async def play_sound(audio):
         source = MediaSource.create_from_storage_file(file)
 
     player = MediaPlayer()
-    player.source = MediaPlaybackItem(source)
+    player.source = source
     player.play()
     await asyncio.sleep(7)
 
 
-def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml):
+async def speak(text):
+    from winsdk.windows.media.core import MediaSource
+    from winsdk.windows.media.playback import MediaPlayer
+    from winsdk.windows.media.speechsynthesis import SpeechSynthesizer
+
+    # print(list(map(lambda info: info.description, SpeechSynthesizer.get_all_voices())))
+
+    stream = await SpeechSynthesizer().synthesize_text_to_stream_async(text)
+    player = MediaPlayer()
+    player.source = MediaSource.create_from_stream(stream, stream.content_type)
+    player.play()
+    await asyncio.sleep(7)
+
+
+def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml):
     notifier = ToastNotificationManager.create_toast_notifier()
 
     document = XmlDocument()
@@ -223,6 +237,8 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
             add_audio(audio, document)
         else:
             add_audio({'silent': 'true'}, document)
+    if dialogue:
+        add_audio({'silent': 'true'}, document)
 
     notification = ToastNotification(document)
     if progress:
@@ -236,7 +252,7 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
     return notification
 
 
-async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, on_dismissed=print, on_failed=print):
+async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, on_dismissed=print, on_failed=print):
     """
     Notify
     Args:
@@ -257,12 +273,14 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
         None
     """
     notification = notify(title, body, on_click, icon, image,
-                          progress, audio, duration, input, inputs, selection, selections, button, buttons, xml)
+                          progress, audio, dialogue, duration, input, inputs, selection, selections, button, buttons, xml)
     loop = asyncio.get_running_loop()
     futures = []
 
     if audio and isinstance(audio, str) and not audio.startswith('ms'):
         futures.append(loop.create_task(play_sound(audio)))
+    if dialogue:
+        futures.append(loop.create_task(speak(dialogue)))
 
     if isinstance(on_click, str):
         on_click = print
@@ -311,5 +329,3 @@ def update_progress(progress):
         data.values[name] = str(value)
     data.sequence_number = 2
     return ToastNotificationManager.create_toast_notifier().update(data, 'my_tag')
-
-toast('Hello', 'Hello from Python', audio=r"C:\Users\Admin\Downloads\nyanpass.mp3")
