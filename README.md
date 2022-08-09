@@ -28,7 +28,7 @@ from win11toast import toast
 toast('Hello Python', 'Click to open url', on_click='https://www.python.org')
 ```
 
-#### Use callback
+### Callback
 ```python
 from win11toast import toast
 
@@ -36,7 +36,7 @@ toast('Hello Python', 'Click to open url', on_click=lambda args: print('clicked!
 # clicked! {'arguments': 'http:', 'user_input': {}}
 ```
 
-#### Icon
+### Icon
 
 ```python
 from win11toast import toast
@@ -46,7 +46,7 @@ toast('Hello', 'Hello from Python', icon='https://unsplash.it/64?image=669')
 
 ![image](https://user-images.githubusercontent.com/12811398/183359855-aa0a8d39-8249-4055-82cb-5968ab35e125.png)
 
-#### Image
+### Image
 
 ```python
 from win11toast import toast
@@ -56,7 +56,7 @@ toast('Hello', 'Hello from Python', image='https://4.bp.blogspot.com/-u-uyq3FEqe
 
 ![image](https://user-images.githubusercontent.com/12811398/183360063-36caef94-bb3e-4eef-ac15-d5d6c86e5d40.png)
 
-#### Progress
+### Progress
 
 ```python
 from time import sleep
@@ -81,7 +81,7 @@ update_progress({'status': 'Completed!'})
 Attributes
 https://docs.microsoft.com/en-ca/uwp/schemas/tiles/toastschema/element-progress
 
-#### Audio
+### Audio
 
 ```python
 from win11toast import toast
@@ -92,7 +92,7 @@ toast('Hello', 'Hello from Python', audio='ms-winsoundevent:Notification.Looping
 Available audio
 https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-audio
 
-#### Button
+### Button
 
 ```python
 from win11toast import toast
@@ -111,7 +111,7 @@ toast('Hello', 'Click a button', buttons=['Approve', 'Dismiss', 'Other'])
 
 ![image](https://user-images.githubusercontent.com/12811398/183363035-af9e13cc-9bb1-4e25-90b3-9f6c1c00b3dd.png)
 
-#### Input
+### Input
 
 ```python
 from win11toast import toast
@@ -123,7 +123,7 @@ toast('Hello', 'Type anything', input='reply', button='Send')
 ![image](https://user-images.githubusercontent.com/12811398/183361532-b554b9ae-e426-4fb1-8080-cc7c52d499d7.png)
 
 
-#### Selection
+### Selection
 
 ```python
 from win11toast import toast
@@ -136,7 +136,7 @@ toast('Hello', 'Which do you like?', selection=['Apple', 'Banana', 'Grape'], but
 
 ![image](https://user-images.githubusercontent.com/12811398/183361138-2b81e8aa-bcbf-4764-a396-b7787518904b.png)
 
-#### No arguments
+### No arguments
 
 ```python
 from win11toast import toast
@@ -146,7 +146,7 @@ toast()
 
 ![image](https://user-images.githubusercontent.com/12811398/183362441-8d865a74-f930-4c16-9757-22244d22a8e2.png)
 
-#### Wrap text
+### Wrap text
 
 ```python
 from win11toast import toast
@@ -156,7 +156,32 @@ toast('Hello', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum 
 
 ![image](https://user-images.githubusercontent.com/12811398/183363789-e5a9c2bb-adf8-438d-9ebb-1e7693971a16.png)
 
+### Non blocking
+
+```python
+from win11toast import notify
+
+notify('Hello Python', 'Click to open url', on_click='https://www.python.org')
+```
+
+### Async
+
+```python
+from win11toast import toast_async
+
+async def main():
+    await toast_async('Hello Python', 'Click to open url', on_click='https://www.python.org')
+```
+
 ### Jupyter
+
+```python
+from win11toast import notify
+
+notify('Hello Python', 'Click to open url', on_click='https://www.python.org')
+```
+
+![image](https://user-images.githubusercontent.com/12811398/183650662-3a3f56f6-4a20-48f1-8649-155948aa21e0.png)
 
 ```python
 from win11toast import toast_async
