@@ -22,11 +22,16 @@ toast('Hello Python🐍')
 
 ![image](https://user-images.githubusercontent.com/12811398/183365362-dd163b1d-d01f-4b0e-9592-44bf63c6b4c2.png)
 
+### Body
+
 ```python
 from win11toast import toast
 
 toast('Hello Python', 'Click to open url', on_click='https://www.python.org')
 ```
+
+![image](https://user-images.githubusercontent.com/12811398/183651326-286e1ce2-b826-41d7-8829-c46d5b64fb37.png)
+
 
 ### Callback
 ```python
