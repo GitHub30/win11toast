@@ -146,6 +146,8 @@ toast('Hello', 'Hello from Python', button={'activationType': 'protocol', 'argum
 # {'arguments': 'https://google.com', 'user_input': {}}
 ```
 
+![image](https://user-images.githubusercontent.com/12811398/183655824-ee2b9001-3808-45fd-b264-8c83b07aa4a2.png)
+
 ```python
 from win11toast import toast
 
@@ -160,11 +162,19 @@ toast('Hello', 'Click a button', buttons=['Approve', 'Dismiss', 'Other'])
 from win11toast import toast
 
 toast('Hello', 'Type anything', input='reply', button='Send')
-# {'arguments': 'dismiss', 'user_input': {'textbox': 'Hi there'}}
+# {'arguments': 'http:Send', 'user_input': {'reply': 'Hi there'}}
 ```
 
 ![image](https://user-images.githubusercontent.com/12811398/183361532-b554b9ae-e426-4fb1-8080-cc7c52d499d7.png)
 
+```python
+from win11toast import toast
+
+toast('Hello', 'Type anything', input='reply', button={'activationType': 'protocol', 'arguments': 'http:', 'content': 'Send', 'hint-inputId': 'reply'})
+# {'arguments': 'http:', 'user_input': {'reply': 'Hi there'}}
+```
+
+![image](https://user-images.githubusercontent.com/12811398/183655443-340593e3-41ec-40b5-96a9-d7ba69fd10a2.png)
 
 ### Selection
 
