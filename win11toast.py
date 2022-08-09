@@ -161,7 +161,7 @@ def activated_args(_, event):
     }
 
 
-def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml):
+def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml):
     notifier = ToastNotificationManager.create_toast_notifier()
 
     document = XmlDocument()
@@ -169,6 +169,9 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
 
     if isinstance(on_click, str):
         set_attribute(document, '/toast', 'launch', on_click)
+
+    if duration:
+        set_attribute(document, '/toast', 'duration', duration)
 
     if title:
         add_text(title, document)
@@ -210,7 +213,7 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
     return notification
 
 
-async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, on_dismissed=print, on_failed=print):
+async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, on_dismissed=print, on_failed=print):
     """
     Notify
     Args:
@@ -231,7 +234,7 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
         None
     """
     notification = notify(title, body, on_click, icon, image,
-                          progress, audio, input, inputs, selection, selections, button, buttons, xml)
+                          progress, audio, duration, input, inputs, selection, selections, button, buttons, xml)
     loop = asyncio.get_running_loop()
     futures = []
 

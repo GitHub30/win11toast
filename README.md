@@ -164,6 +164,17 @@ from win11toast import toast
 toast('Hello Python🐍', audio={'silent': 'true'})
 ```
 
+### Long duration
+
+```python
+from win11toast import toast
+
+toast('Hello Python🐍', duration='long')
+```
+
+displayed for 25 seconds
+https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-toast
+
 ### Button
 
 ```python
