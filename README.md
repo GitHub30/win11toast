@@ -323,7 +323,7 @@ await toast_async('Hello Python', 'Click to open url', on_click='https://www.pyt
 ```python
 import urllib.request
 from pathlib import Path
-src = str(Path(urllib.request.urlretrieve("https://i.imgur.com/p9dRdtP.jpg", "nyanpass.jpg")[0]).absolute())
+src = str(Path(urllib.request.urlretrieve("https://i.imgur.com/p9dRdtP.jpg")[0]).absolute())
 
 from win11toast import toast_async
 await toast_async('にゃんぱすー', audio='https://nyanpass.com/nyanpass.mp3', image={'src': src, 'placement':'hero'})
