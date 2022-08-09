@@ -311,5 +311,3 @@ def update_progress(progress):
         data.values[name] = str(value)
     data.sequence_number = 2
     return ToastNotificationManager.create_toast_notifier().update(data, 'my_tag')
-
-toast()
