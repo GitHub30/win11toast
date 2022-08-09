@@ -337,6 +337,12 @@ from win11toast import toast_async
 await toast_async('にゃんぱすー', audio='https://nyanpass.com/nyanpass.mp3', image={'src': src, 'placement':'hero'})
 ```
 
+```python
+from win11toast import toast_async
+
+await toast_async('Hello Python🐍', dialogue='にゃんぱすー')
+```
+
 ## Debug
 
 ```python
