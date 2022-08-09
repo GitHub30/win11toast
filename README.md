@@ -60,6 +60,21 @@ toast('Hello', 'Hello from Python', icon='https://unsplash.it/64?image=669')
 
 ![image](https://user-images.githubusercontent.com/12811398/183359855-aa0a8d39-8249-4055-82cb-5968ab35e125.png)
 
+#### Square
+
+```python
+from win11toast import toast
+
+icon = {
+    'src': 'https://unsplash.it/64?image=669',
+    'placement': 'appLogoOverride'
+}
+
+toast('Hello', 'Hello from Python', icon=icon)
+```
+
+![image](https://user-images.githubusercontent.com/12811398/183659504-e83d1110-8f38-4f8e-81d6-b99ef9c4537c.png)
+
 ### Image
 
 ```python
@@ -69,6 +84,21 @@ toast('Hello', 'Hello from Python', image='https://4.bp.blogspot.com/-u-uyq3FEqe
 ```
 
 ![image](https://user-images.githubusercontent.com/12811398/183360063-36caef94-bb3e-4eef-ac15-d5d6c86e5d40.png)
+
+#### Hero
+
+```python
+from win11toast import toast
+
+image = {
+    'src': 'https://4.bp.blogspot.com/-u-uyq3FEqeY/UkJLl773BHI/AAAAAAAAYPQ/7bY05EeF1oI/s800/cooking_toaster.png',
+    'placement': 'hero'
+}
+
+toast('Hello', 'Hello from Python', image=image)
+```
+
+![image](https://user-images.githubusercontent.com/12811398/183660596-8bff003e-af94-4554-b188-5946e9981723.png)
 
 ### Progress
 
