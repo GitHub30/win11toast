@@ -106,6 +106,28 @@ toast('Hello', 'Hello from Python', audio='ms-winsoundevent:Notification.Looping
 Available audio
 https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-audio
 
+#### Loop
+
+```python
+from win11toast import toast
+
+toast('Hello', 'Hello from Python', audio={'loop': 'true'})
+```
+
+```python
+from win11toast import toast
+
+toast('Hello', 'Hello from Python', audio={'src': 'ms-winsoundevent:Notification.Looping.Alarm', 'loop': 'true'})
+```
+
+### Silent
+
+```python
+from win11toast import toast
+
+toast('Hello Python🐍', audio={'silent': 'true'})
+```
+
 ### Button
 
 ```python
