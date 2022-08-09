@@ -156,6 +156,21 @@ toast('Hello', 'Click a button', buttons=['Approve', 'Dismiss', 'Other'])
 
 ![image](https://user-images.githubusercontent.com/12811398/183363035-af9e13cc-9bb1-4e25-90b3-9f6c1c00b3dd.png)
 
+#### Play music or Open Explorer
+
+```python
+from win11toast import toast
+
+buttons = [
+    {'activationType': 'protocol', 'arguments': 'C:\Windows\Media\Alarm01.wav', 'content': 'Play'},
+    {'activationType': 'protocol', 'arguments': 'file:///C:/Windows/Media', 'content': 'Open Folder'}
+]
+
+toast('Music Player', 'Download Finished', buttons=buttons)
+```
+
+![image](https://user-images.githubusercontent.com/12811398/183657915-1068c0d9-fc1a-4f6d-82c2-7835c3d9e585.png)
+
 ### Input
 
 ```python
