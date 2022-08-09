@@ -200,11 +200,15 @@ from win11toast import toast
 toast(ocr='https://i.imgur.com/oYojrJW.png')
 ```
 
+![image](https://user-images.githubusercontent.com/12811398/183774255-3b78723a-a1ea-4b67-8342-5edfbb329c24.png)
+
 ```python
 from win11toast import toast
 
 toast(ocr={'lang': 'ja', 'ocr': r'C:\Users\Admin\Downloads\hello.png'})
 ```
+
+![image](https://user-images.githubusercontent.com/12811398/183774317-e1bc2454-3649-4573-9212-5f18d221c162.png)
 
 ### Long duration
 
