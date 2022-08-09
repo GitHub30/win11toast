@@ -76,6 +76,8 @@ for i in range(1, 15+1):
     update_progress({'value': i/15, 'valueStringOverride': f'{i}/15 videos'})
 ```
 
+![image](https://user-images.githubusercontent.com/12811398/183574436-05e3b504-bdec-46b1-a3f5-1ef861bb856a.png)
+
 Attributes
 https://docs.microsoft.com/en-ca/uwp/schemas/tiles/toastschema/element-progress
 
