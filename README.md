@@ -22,6 +22,8 @@ toast('Hello Python🐍')
 
 ![image](https://user-images.githubusercontent.com/12811398/183365362-dd163b1d-d01f-4b0e-9592-44bf63c6b4c2.png)
 
+https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-text
+
 ### Body
 
 ```python
@@ -85,6 +87,8 @@ toast('Hello', 'Hello from Python', image='https://4.bp.blogspot.com/-u-uyq3FEqe
 
 ![image](https://user-images.githubusercontent.com/12811398/183360063-36caef94-bb3e-4eef-ac15-d5d6c86e5d40.png)
 
+https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-image
+
 #### Hero
 
 ```python
@@ -124,6 +128,8 @@ update_progress({'status': 'Completed!'})
 
 Attributes
 https://docs.microsoft.com/en-ca/uwp/schemas/tiles/toastschema/element-progress
+
+https://docs.microsoft.com/en-us/windows/apps/design/shell/tiles-and-notifications/toast-progress-bar
 
 ### Audio
 
@@ -186,6 +192,8 @@ toast('Hello', 'Click a button', buttons=['Approve', 'Dismiss', 'Other'])
 
 ![image](https://user-images.githubusercontent.com/12811398/183363035-af9e13cc-9bb1-4e25-90b3-9f6c1c00b3dd.png)
 
+https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-action
+
 #### Play music or Open Explorer
 
 ```python
@@ -220,6 +228,8 @@ toast('Hello', 'Type anything', input='reply', button={'activationType': 'protoc
 ```
 
 ![image](https://user-images.githubusercontent.com/12811398/183655443-340593e3-41ec-40b5-96a9-d7ba69fd10a2.png)
+
+https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-input
 
 ### Selection
 
