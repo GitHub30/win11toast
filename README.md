@@ -142,6 +142,26 @@ toast('Hello', 'Hello from Python', audio='ms-winsoundevent:Notification.Looping
 Available audio
 https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-audio
 
+##### From URL
+
+```python
+from win11toast import toast
+
+toast('Hello', 'Hello from Python', audio='https://nyanpass.com/nyanpass.mp3')
+```
+
+##### From file
+
+```python
+from win11toast import toast
+
+toast('Hello', 'Hello from Python', audio=r"C:\Users\Admin\Downloads\nyanpass.mp3")
+```
+
+I don't know how to add custom audio please help.
+
+https://docs.microsoft.com/en-us/windows/apps/design/shell/tiles-and-notifications/custom-audio-on-toasts
+
 #### Loop
 
 ```python

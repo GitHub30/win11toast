@@ -161,6 +161,24 @@ def activated_args(_, event):
     }
 
 
+async def play_sound(audio):
+    from winsdk.windows.media.core import MediaSource
+    from winsdk.windows.media.playback import MediaPlayer, MediaPlaybackItem
+
+    if audio.startswith('http'):
+        from winsdk.windows.foundation import Uri
+        source = MediaSource.create_from_uri(Uri(audio))
+    else:
+        from winsdk.windows.storage import StorageFile
+        file = await StorageFile.get_file_from_path_async(audio)
+        source = MediaSource.create_from_storage_file(file)
+
+    player = MediaPlayer()
+    player.source = MediaPlaybackItem(source)
+    player.play()
+    await asyncio.sleep(7)
+
+
 def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml):
     notifier = ToastNotificationManager.create_toast_notifier()
 
@@ -199,7 +217,12 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
     if progress:
         add_progress(progress, document)
     if audio:
-        add_audio(audio, document)
+        if isinstance(audio, str) and audio.startswith('ms'):
+            add_audio(audio, document)
+        elif isinstance(audio, dict) and 'src' in audio and audio['src'].startswith('ms'):
+            add_audio(audio, document)
+        else:
+            add_audio({'silent': 'true'}, document)
 
     notification = ToastNotification(document)
     if progress:
@@ -237,6 +260,9 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
                           progress, audio, duration, input, inputs, selection, selections, button, buttons, xml)
     loop = asyncio.get_running_loop()
     futures = []
+
+    if audio and isinstance(audio, str) and not audio.startswith('ms'):
+        futures.append(play_sound(audio))
 
     if isinstance(on_click, str):
         on_click = print
@@ -285,3 +311,5 @@ def update_progress(progress):
         data.values[name] = str(value)
     data.sequence_number = 2
     return ToastNotificationManager.create_toast_notifier().update(data, 'my_tag')
+
+toast()
