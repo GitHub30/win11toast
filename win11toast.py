@@ -26,26 +26,44 @@ def set_attribute(document, xpath, name, value):
     document.select_single_node(xpath).attributes.set_named_item(attribute)
 
 
-def add_text(message, document):
+def add_text(msg, document):
+    if isinstance(msg, str):
+        msg = {
+            'text': msg
+        }
     binding = document.select_single_node('//binding')
     text = document.create_element('text')
-    text.inner_text = message
+    for name, value in msg.items():
+        if name == 'text':
+            text.inner_text = msg['text']
+        else:
+            text.set_attribute(name, value)
     binding.append_child(text)
 
 
-def add_logo(logo, document):
+def add_icon(icon, document):
+    if isinstance(icon, str):
+        icon = {
+            'placement': 'appLogoOverride',
+            'hint-crop': 'circle',
+            'src': icon
+        }
     binding = document.select_single_node('//binding')
     image = document.create_element('image')
-    image.set_attribute('placement', 'appLogoOverride')
-    image.set_attribute('hint-crop', 'circle')
-    image.set_attribute('src', logo)
+    for name, value in icon.items():
+        image.set_attribute(name, value)
     binding.append_child(image)
 
 
-def add_image(src, document):
+def add_image(img, document):
+    if isinstance(img, str):
+        img = {
+            'src': img
+        }
     binding = document.select_single_node('//binding')
     image = document.create_element('image')
-    image.set_attribute('src', src)
+    for name, value in img.items():
+        image.set_attribute(name, value)
     binding.append_child(image)
 
 
@@ -57,10 +75,15 @@ def add_progress(prog, document):
     binding.append_child(progress)
 
 
-def add_audio(src, document):
+def add_audio(aud, document):
+    if isinstance(aud, str):
+        aud = {
+            'src': aud
+        }
     toast = document.select_single_node('/toast')
     audio = document.create_element('audio')
-    audio.set_attribute('src', src)
+    for name, value in aud.items():
+        audio.set_attribute(name, value)
     toast.append_child(audio)
 
 
@@ -71,36 +94,60 @@ def create_actions(document):
     return actions
 
 
-def add_action(action, document):
+def add_button(button, document):
+    if isinstance(button, str):
+        button = {
+            'activationType': 'protocol',
+            'arguments': 'http:' + button,
+            'content': button
+        }
     actions = document.select_single_node(
         '//actions') or create_actions(document)
-    action_element = document.create_element('action')
-    action_element.set_attribute('activationType', 'system')
-    action_element.set_attribute('arguments', 'dismiss')
-    action_element.set_attribute('content', action)
-    actions.append_child(action_element)
+    action = document.create_element('action')
+    for name, value in button.items():
+        action.set_attribute(name, value)
+    actions.append_child(action)
 
 
 def add_input(id, document):
+    if isinstance(id, str):
+        id = {
+            'id': id,
+            'type': 'text',
+            'placeHolderContent': id
+        }
     actions = document.select_single_node(
         '//actions') or create_actions(document)
     input = document.create_element('input')
-    input.set_attribute('id', id)
-    input.set_attribute('type', 'text')
+    for name, value in id.items():
+        input.set_attribute(name, value)
     actions.append_child(input)
 
 
-def add_selections(selections, document):
+def add_selection(selection, document):
+    if isinstance(selection, list):
+        selection = {
+            'input': {
+                'id': 'selection',
+                'type': 'selection'
+            },
+            'selection': selection
+        }
     actions = document.select_single_node(
         '//actions') or create_actions(document)
     input = document.create_element('input')
-    input.set_attribute('id', 'selection')
-    input.set_attribute('type', 'selection')
+    for name, value in selection['input'].items():
+        input.set_attribute(name, value)
     actions.append_child(input)
-    for selection in selections:
+    for sel in selection['selection']:
+        if isinstance(sel, str):
+            sel = {
+                'id': sel,
+                'content': sel
+            }
         selection_element = document.create_element('selection')
-        selection_element.set_attribute('id', selection)
-        selection_element.set_attribute('content', selection)
+        for name, value in sel.items():
+            selection_element.set_attribute(name, value)
         input.append_child(selection_element)
 
 
@@ -114,26 +161,7 @@ def activated_args(_, event):
     }
 
 
-async def toast_async(title=None, body=None, on_click=print, logo=None, image=None, progress=None, audio=None, inputs=[], selections=[], actions=[], on_dismissed=print, on_failed=print, xml=xml):
-    """
-    Notify
-    Args:
-        title: <str>
-        body: <str>
-        on_click: <function>
-        on_dismissed: <function>
-        on_failed: <function>
-        inputs: <list<str>> ['textbox']
-        selections: <list<str>> ['Apple', 'Banana', 'Grape']
-        actions: <list<str>> ['Button']
-        logo: <str> https://unsplash.it/64?image=669
-        image: <str> https://4.bp.blogspot.com/-u-uyq3FEqeY/UkJLl773BHI/AAAAAAAAYPQ/7bY05EeF1oI/s800/cooking_toaster.png
-        audio: <str> ms-winsoundevent:Notification.Looping.Alarm
-        xml: <str>
-
-    Returns:
-        None
-    """
+def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml):
     notifier = ToastNotificationManager.create_toast_notifier()
 
     document = XmlDocument()
@@ -146,16 +174,23 @@ async def toast_async(title=None, body=None, on_click=print, logo=None, image=No
         add_text(title, document)
     if body:
         add_text(body, document)
+    if input:
+        add_input(input, document)
     if inputs:
         for input in inputs:
             add_input(input, document)
+    if selection:
+        add_selection(selection, document)
     if selections:
-        add_selections(selections, document)
-    if actions:
-        for action in actions:
-            add_action(action, document)
-    if logo:
-        add_logo(logo, document)
+        for selection in selections:
+            add_selection(selection, document)
+    if button:
+        add_button(button, document)
+    if buttons:
+        for button in buttons:
+            add_button(button, document)
+    if icon:
+        add_icon(icon, document)
     if image:
         add_image(image, document)
     if progress:
@@ -171,6 +206,32 @@ async def toast_async(title=None, body=None, on_click=print, logo=None, image=No
         data.sequence_number = 1
         notification.data = data
         notification.tag = 'my_tag'
+    notifier.show(notification)
+    return notification
+
+
+async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, on_dismissed=print, on_failed=print):
+    """
+    Notify
+    Args:
+        title: <str>
+        body: <str>
+        on_click: <function>
+        on_dismissed: <function>
+        on_failed: <function>
+        inputs: <list<str>> ['textbox']
+        selections: <list<str>> ['Apple', 'Banana', 'Grape']
+        actions: <list<str>> ['Button']
+        icon: <str> https://unsplash.it/64?image=669
+        image: <str> https://4.bp.blogspot.com/-u-uyq3FEqeY/UkJLl773BHI/AAAAAAAAYPQ/7bY05EeF1oI/s800/cooking_toaster.png
+        audio: <str> ms-winsoundevent:Notification.Looping.Alarm
+        xml: <str>
+
+    Returns:
+        None
+    """
+    notification = notify(title, body, on_click, icon, image,
+                          progress, audio, input, inputs, selection, selections, button, buttons, xml)
     loop = asyncio.get_running_loop()
     futures = []
 
@@ -198,7 +259,6 @@ async def toast_async(title=None, body=None, on_click=print, logo=None, image=No
     )
     futures.append(failed_future)
 
-    notifier.show(notification)
     try:
         _, pending = await asyncio.wait(futures, return_when=asyncio.FIRST_COMPLETED)
         for p in pending:

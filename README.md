@@ -36,12 +36,12 @@ toast('Hello Python', 'Click to open url', on_click=lambda args: print('clicked!
 # clicked! {'arguments': 'http:', 'user_input': {}}
 ```
 
-#### Logo
+#### Icon
 
 ```python
 from win11toast import toast
 
-toast('Hello', 'Hello from Python', logo='https://unsplash.it/64?image=669')
+toast('Hello', 'Hello from Python', icon='https://unsplash.it/64?image=669')
 ```
 
 ![image](https://user-images.githubusercontent.com/12811398/183359855-aa0a8d39-8249-4055-82cb-5968ab35e125.png)
@@ -60,20 +60,19 @@ toast('Hello', 'Hello from Python', image='https://4.bp.blogspot.com/-u-uyq3FEqe
 
 ```python
 from time import sleep
-from threading import Thread
-from win11toast import toast, update_progress
+from win11toast import notify, update_progress
 
-attributes = {
+notify(progress={
     'title': 'YouTube',
     'status': 'Downloading...',
     'value': '0',
     'valueStringOverride': '0/15 videos'
-}
-Thread(target=toast, kwargs={'progress': attributes}).start()
+})
 
 for i in range(1, 15+1):
     sleep(1)
     update_progress({'value': i/15, 'valueStringOverride': f'{i}/15 videos'})
+update_progress({'status': 'Completed!'})
 ```
 
 ![image](https://user-images.githubusercontent.com/12811398/183574436-05e3b504-bdec-46b1-a3f5-1ef861bb856a.png)
@@ -97,7 +96,7 @@ https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-audio
 ```python
 from win11toast import toast
 
-toast('Hello', 'Hello from Python', actions=['Dismiss'])
+toast('Hello', 'Hello from Python', button='Dismiss')
 # {'arguments': 'dismiss', 'user_input': {}}
 ```
 
@@ -106,7 +105,7 @@ toast('Hello', 'Hello from Python', actions=['Dismiss'])
 ```python
 from win11toast import toast
 
-toast('Hello', 'Click a button', actions=['Approve', 'Dismiss', 'Other'])
+toast('Hello', 'Click a button', buttons=['Approve', 'Dismiss', 'Other'])
 ```
 
 ![image](https://user-images.githubusercontent.com/12811398/183363035-af9e13cc-9bb1-4e25-90b3-9f6c1c00b3dd.png)
@@ -116,7 +115,7 @@ toast('Hello', 'Click a button', actions=['Approve', 'Dismiss', 'Other'])
 ```python
 from win11toast import toast
 
-toast('Hello', 'Type anything', inputs=['textbox'], actions=['Send'])
+toast('Hello', 'Type anything', input='reply', button='Send')
 # {'arguments': 'dismiss', 'user_input': {'textbox': 'Hi there'}}
 ```
 
@@ -128,7 +127,7 @@ toast('Hello', 'Type anything', inputs=['textbox'], actions=['Send'])
 ```python
 from win11toast import toast
 
-toast('Hello', 'Which do you like?', selections=['Apple', 'Banana', 'Grape'], actions=['Submit'])
+toast('Hello', 'Which do you like?', selection=['Apple', 'Banana', 'Grape'], button='Submit')
 # {'arguments': 'dismiss', 'user_input': {'selection': 'Grape'}}
 ```
 
