@@ -193,6 +193,47 @@ async def speak(text):
     await asyncio.sleep(7)
 
 
+async def recognize(ocr):
+    from winsdk.windows.media.ocr import OcrEngine
+    from winsdk.windows.graphics.imaging import BitmapDecoder
+    if isinstance(ocr, str):
+        ocr = {'ocr': ocr}
+    if ocr['ocr'].startswith('http'):
+        from winsdk.windows.foundation import Uri
+        from winsdk.windows.storage.streams import RandomAccessStreamReference
+        ref = RandomAccessStreamReference.create_from_uri(Uri(ocr['ocr']))
+        stream = await ref.open_read_async()
+    else:
+        from winsdk.windows.storage import StorageFile, FileAccessMode
+        file = await StorageFile.get_file_from_path_async(ocr['ocr'])
+        stream = await file.open_async(FileAccessMode.READ)
+    decoder = await BitmapDecoder.create_async(stream)
+    bitmap = await decoder.get_software_bitmap_async()
+    if 'lang' in ocr:
+        from winsdk.windows.globalization import Language
+        if OcrEngine.is_language_supported(Language(ocr['lang'])):
+            engine = OcrEngine.try_create_from_language(Language(ocr['lang']))
+        else:
+            class UnsupportedOcrResult:
+                def __init__(self):
+                    self.text = 'Please install. Get-WindowsCapability -Online -Name "Language.OCR*"'
+            return UnsupportedOcrResult()
+    else:
+        engine = OcrEngine.try_create_from_user_profile_languages()
+    # Avaliable properties (lines, angle, word, BoundingRect(x,y,width,height))
+    # https://docs.microsoft.com/en-us/uwp/api/windows.media.ocr.ocrresult?view=winrt-22621#properties
+    return await engine.recognize_async(bitmap)
+
+
+def available_recognizer_languages():
+    from winsdk.windows.media.ocr import OcrEngine
+    for language in OcrEngine.get_available_recognizer_languages():
+        print(language.display_name, language.language_tag)
+    print('Run as Administrator')
+    print('Get-WindowsCapability -Online -Name "Language.OCR*"')
+    print('Add-WindowsCapability -Online -Name "Language.OCR~~~en-US~0.0.1.0"')
+
+
 def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml):
     notifier = ToastNotificationManager.create_toast_notifier()
 
@@ -252,7 +293,7 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
     return notification
 
 
-async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, on_dismissed=print, on_failed=print):
+async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, ocr=None, on_dismissed=print, on_failed=print):
     """
     Notify
     Args:
@@ -272,6 +313,11 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
     Returns:
         None
     """
+    if ocr:
+        title = 'OCR Result'
+        body = (await recognize(ocr)).text
+        src = ocr if isinstance(ocr, str) else ocr['ocr']
+        image = {'placement': 'hero', 'src': src}
     notification = notify(title, body, on_click, icon, image,
                           progress, audio, dialogue, duration, input, inputs, selection, selections, button, buttons, xml)
     loop = asyncio.get_running_loop()

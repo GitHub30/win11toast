@@ -192,6 +192,20 @@ from win11toast import toast
 toast('Hello Python🐍', dialogue='Hello world')
 ```
 
+### OCR👀
+
+```python
+from win11toast import toast
+
+toast(ocr='https://i.imgur.com/oYojrJW.png')
+```
+
+```python
+from win11toast import toast
+
+toast(ocr={'lang': 'ja', 'ocr': r'C:\Users\Admin\Downloads\hello.png'})
+```
+
 ### Long duration
 
 ```python
