@@ -176,7 +176,7 @@ from win11toast import toast
 toast('Hello', 'Hello from Python', audio={'src': 'ms-winsoundevent:Notification.Looping.Alarm', 'loop': 'true'})
 ```
 
-### Silent
+### Silent🤫
 
 ```python
 from win11toast import toast
