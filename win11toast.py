@@ -262,7 +262,7 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
     futures = []
 
     if audio and isinstance(audio, str) and not audio.startswith('ms'):
-        futures.append(play_sound(audio))
+        futures.append(loop.create_task(play_sound(audio)))
 
     if isinstance(on_click, str):
         on_click = print
@@ -311,3 +311,5 @@ def update_progress(progress):
         data.values[name] = str(value)
     data.sequence_number = 2
     return ToastNotificationManager.create_toast_notifier().update(data, 'my_tag')
+
+toast('Hello', 'Hello from Python', audio=r"C:\Users\Admin\Downloads\nyanpass.mp3")
