@@ -134,10 +134,17 @@ toast('Hello Python🐍', audio={'silent': 'true'})
 from win11toast import toast
 
 toast('Hello', 'Hello from Python', button='Dismiss')
-# {'arguments': 'dismiss', 'user_input': {}}
+# {'arguments': 'http:Dismiss', 'user_input': {}}
 ```
 
 ![image](https://user-images.githubusercontent.com/12811398/183361855-1269d017-5354-41db-9613-20ad2f22447a.png)
+
+```python
+from win11toast import toast
+
+toast('Hello', 'Hello from Python', button={'activationType': 'protocol', 'arguments': 'https://google.com', 'content': 'Open Google'})
+# {'arguments': 'https://google.com', 'user_input': {}}
+```
 
 ```python
 from win11toast import toast
