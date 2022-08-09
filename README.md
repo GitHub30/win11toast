@@ -72,6 +72,7 @@ notify(progress={
 for i in range(1, 15+1):
     sleep(1)
     update_progress({'value': i/15, 'valueStringOverride': f'{i}/15 videos'})
+
 update_progress({'status': 'Completed!'})
 ```
 
