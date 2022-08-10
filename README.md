@@ -44,7 +44,7 @@ toast('Hello', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum 
 
 ![image](https://user-images.githubusercontent.com/12811398/183363789-e5a9c2bb-adf8-438d-9ebb-1e7693971a16.png)
 
-### Run Python script
+### Run Python script on Click
 ```python
 from win11toast import toast
 
