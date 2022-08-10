@@ -235,8 +235,6 @@ def available_recognizer_languages():
 
 
 def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml):
-    notifier = ToastNotificationManager.create_toast_notifier()
-
     document = XmlDocument()
     document.load_xml(xml)
 
@@ -289,7 +287,7 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
         data.sequence_number = 1
         notification.data = data
         notification.tag = 'my_tag'
-    notifier.show(notification)
+    ToastNotificationManager.create_toast_notifier().show(notification)
     return notification
 
 
