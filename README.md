@@ -53,6 +53,7 @@ toast('Hello Pythonista', 'Click to run python script', on_click=r'C:\Users\Admi
 ```
 
 Since the current directory when executing the script is `C:\Windows\system32`, use `os.chdir()` accordingly.
+
 e.g. [handler.py](https://gist.github.com/GitHub30/dae1b257c93d8315ea38554c9554a2ad)
 
 ### Callback
