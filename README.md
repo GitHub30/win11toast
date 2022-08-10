@@ -48,13 +48,17 @@ toast('Hello', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum 
 ```python
 from win11toast import toast
 
-toast('Hello Pythonista', 'Click to run python script', on_click=r'C:\Users\Admin\Downloads\handler.py')
-# {'arguments': 'C:\\Users\\Admin\\Downloads\\handler.py', 'user_input': {}}
+toast('Hello Pythonista', 'Click to run python script', on_click=r'C:\Users\Admin\Downloads\handler.pyw')
+# {'arguments': 'C:\\Users\\Admin\\Downloads\\handler.pyw', 'user_input': {}}
 ```
 
 Since the current directory when executing the script is `C:\Windows\system32`, use `os.chdir()` accordingly.
 
-e.g. [handler.py](https://gist.github.com/GitHub30/dae1b257c93d8315ea38554c9554a2ad)
+e.g. [handler.pyw](https://gist.github.com/GitHub30/dae1b257c93d8315ea38554c9554a2ad)
+
+On Windows, you can run a Python script in the background using the pythonw.exe executable, which will run your program with no visible process or way to interact with it.
+
+https://stackoverflow.com/questions/9705982/pythonw-exe-or-python-exe
 
 ### Callback
 ```python
