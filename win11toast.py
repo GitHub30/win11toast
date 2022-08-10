@@ -234,7 +234,7 @@ def available_recognizer_languages():
     print('Add-WindowsCapability -Online -Name "Language.OCR~~~en-US~0.0.1.0"')
 
 
-def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml):
+def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id='Python'):
     document = XmlDocument()
     document.load_xml(xml)
 
@@ -287,11 +287,15 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
         data.sequence_number = 1
         notification.data = data
         notification.tag = 'my_tag'
-    ToastNotificationManager.create_toast_notifier().show(notification)
+    try:
+        notifier = ToastNotificationManager.create_toast_notifier()
+    except Exception as e:
+        notifier = ToastNotificationManager.create_toast_notifier(app_id)
+    notifier.show(notification)
     return notification
 
 
-async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, ocr=None, on_dismissed=print, on_failed=print):
+async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id='Python', ocr=None, on_dismissed=print, on_failed=print):
     """
     Notify
     Args:
@@ -317,7 +321,7 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
         src = ocr if isinstance(ocr, str) else ocr['ocr']
         image = {'placement': 'hero', 'src': src}
     notification = notify(title, body, on_click, icon, image,
-                          progress, audio, dialogue, duration, input, inputs, selection, selections, button, buttons, xml)
+                          progress, audio, dialogue, duration, input, inputs, selection, selections, button, buttons, xml, app_id)
     loop = asyncio.get_running_loop()
     futures = []
 
@@ -367,9 +371,13 @@ def toast(*args, **kwargs):
     asyncio.run(toast_async(*args, **kwargs))
 
 
-def update_progress(progress):
+def update_progress(progress, app_id='Python'):
     data = NotificationData()
     for name, value in progress.items():
         data.values[name] = str(value)
     data.sequence_number = 2
-    return ToastNotificationManager.create_toast_notifier().update(data, 'my_tag')
+    try:
+        notifier = ToastNotificationManager.create_toast_notifier()
+    except Exception as e:
+        notifier = ToastNotificationManager.create_toast_notifier(app_id)
+    return notifier.update(data, 'my_tag')
