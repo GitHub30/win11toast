@@ -10,6 +10,7 @@ from winsdk.windows.ui.notifications import (
     ToastFailedEventArgs
 )
 
+DEFAULT_APP_ID = 'Python'
 
 xml = """
 <toast activationType="protocol" launch="http:">
@@ -234,7 +235,7 @@ def available_recognizer_languages():
     print('Add-WindowsCapability -Online -Name "Language.OCR~~~en-US~0.0.1.0"')
 
 
-def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id='Python'):
+def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID):
     document = XmlDocument()
     document.load_xml(xml)
 
@@ -287,15 +288,18 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
         data.sequence_number = 1
         notification.data = data
         notification.tag = 'my_tag'
-    try:
-        notifier = ToastNotificationManager.create_toast_notifier()
-    except Exception as e:
+    if app_id == DEFAULT_APP_ID:
+        try:
+            notifier = ToastNotificationManager.create_toast_notifier()
+        except Exception as e:
+            notifier = ToastNotificationManager.create_toast_notifier(app_id)
+    else:
         notifier = ToastNotificationManager.create_toast_notifier(app_id)
     notifier.show(notification)
     return notification
 
 
-async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id='Python', ocr=None, on_dismissed=print, on_failed=print):
+async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, ocr=None, on_dismissed=print, on_failed=print):
     """
     Notify
     Args:
@@ -371,13 +375,16 @@ def toast(*args, **kwargs):
     asyncio.run(toast_async(*args, **kwargs))
 
 
-def update_progress(progress, app_id='Python'):
+def update_progress(progress, app_id=DEFAULT_APP_ID):
     data = NotificationData()
     for name, value in progress.items():
         data.values[name] = str(value)
     data.sequence_number = 2
-    try:
-        notifier = ToastNotificationManager.create_toast_notifier()
-    except Exception as e:
+    if app_id == DEFAULT_APP_ID:
+        try:
+            notifier = ToastNotificationManager.create_toast_notifier()
+        except Exception as e:
+            notifier = ToastNotificationManager.create_toast_notifier(app_id)
+    else:
         notifier = ToastNotificationManager.create_toast_notifier(app_id)
     return notifier.update(data, 'my_tag')
