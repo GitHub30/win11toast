@@ -60,7 +60,10 @@ On Windows, you can run a Python script in the background using the pythonw.exe 
 
 https://stackoverflow.com/questions/9705982/pythonw-exe-or-python-exe
 
+![2b53d4528ff94d40a0ab6da7c7fe33c6](https://user-images.githubusercontent.com/12811398/196034007-053ffe1c-4a95-441b-af06-ffc3753a1c64.gif)
+
 ### Callback
+
 ```python
 from win11toast import toast
 
