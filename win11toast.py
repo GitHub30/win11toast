@@ -151,15 +151,23 @@ def add_selection(selection, document):
             selection_element.set_attribute(name, value)
         input.append_child(selection_element)
 
+result = list()
+
+def result_wrapper(*args):
+    global result
+    result = args
+    return result
 
 def activated_args(_, event):
+    global result
     e = ToastActivatedEventArgs._from(event)
     user_input = dict([(name, IPropertyValue._from(
         e.user_input[name]).get_string()) for name in e.user_input])
-    return {
+    result = {
         'arguments': e.arguments,
         'user_input': user_input
     }
+    return result
 
 
 async def play_sound(audio):
@@ -347,14 +355,14 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
     dismissed_future = loop.create_future()
     dismissed_token = notification.add_dismissed(
         lambda _, event_args: loop.call_soon_threadsafe(
-            dismissed_future.set_result, on_dismissed(ToastDismissedEventArgs._from(event_args).reason))
+            dismissed_future.set_result, on_dismissed(result_wrapper(ToastDismissedEventArgs._from(event_args).reason)))
     )
     futures.append(dismissed_future)
 
     failed_future = loop.create_future()
     failed_token = notification.add_failed(
         lambda _, event_args: loop.call_soon_threadsafe(
-            failed_future.set_result, on_failed(ToastFailedEventArgs._from(event_args).error_code))
+            failed_future.set_result, on_failed(result_wrapper(ToastFailedEventArgs._from(event_args).error_code)))
     )
     futures.append(failed_future)
 
@@ -369,10 +377,11 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
             notification.remove_dismissed(dismissed_token)
         if failed_token is not None:
             notification.remove_failed(failed_token)
+        return result
 
 
 def toast(*args, **kwargs):
-    asyncio.run(toast_async(*args, **kwargs))
+    return asyncio.run(toast_async(*args, **kwargs))
 
 
 def update_progress(progress, app_id=DEFAULT_APP_ID):
