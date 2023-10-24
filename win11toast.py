@@ -246,10 +246,13 @@ def available_recognizer_languages():
 def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, scenario=None):
     document = XmlDocument()
     document.load_xml(xml.format(scenario=scenario if scenario else 'default'))
+
     if isinstance(on_click, str):
         set_attribute(document, '/toast', 'launch', on_click)
+
     if duration:
         set_attribute(document, '/toast', 'duration', duration)
+        
     if title:
         add_text(title, document)
     if body:
