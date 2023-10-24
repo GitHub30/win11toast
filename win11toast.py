@@ -248,6 +248,7 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
     document.load_xml(xml.format(scenario=scenario if scenario else 'default'))
     if isinstance(on_click, str):
         set_attribute(document, '/toast', 'launch', on_click)
+
     if duration:
         set_attribute(document, '/toast', 'duration', duration)
     if title:
