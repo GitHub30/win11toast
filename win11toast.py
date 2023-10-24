@@ -251,6 +251,7 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
 
     if duration:
         set_attribute(document, '/toast', 'duration', duration)
+
     if title:
         add_text(title, document)
     if body:
