@@ -240,6 +240,21 @@ toast('Hello Python🐍', duration='long')
 displayed for 25 seconds
 https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-toast
 
+### No timeout
+
+```python
+from win11toast import toast
+
+toast('Hello Python🐍', scenario='incomingCall')
+```
+
+The scenario your toast is used for, like an alarm, reminder, incomingCall or urgent.
+
+https://learn.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-toast#:~:text=None-,scenario,-The%20scenario%20your
+
+![image](https://github.com/GitHub30/win11toast/assets/12811398/f7e65d41-7bd6-4e64-82ff-2ed7eab82922)
+
+
 ### Button
 
 ```python
