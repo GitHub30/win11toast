@@ -13,7 +13,7 @@ from winsdk.windows.ui.notifications import (
 DEFAULT_APP_ID = 'Python'
 
 xml = """
-<toast activationType="protocol" launch="http:">
+<toast activationType="protocol" launch="http:" scenario="{scenario}">
     <visual>
         <binding template='ToastGeneric'></binding>
     </visual>
@@ -243,10 +243,9 @@ def available_recognizer_languages():
     print('Add-WindowsCapability -Online -Name "Language.OCR~~~en-US~0.0.1.0"')
 
 
-def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID):
+def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, scenario=None):
     document = XmlDocument()
-    document.load_xml(xml)
-
+    document.load_xml(xml.format(scenario=scenario if scenario else 'default'))
     if isinstance(on_click, str):
         set_attribute(document, '/toast', 'launch', on_click)
 
@@ -307,7 +306,7 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
     return notification
 
 
-async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, ocr=None, on_dismissed=print, on_failed=print):
+async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, ocr=None, on_dismissed=print, on_failed=print, scenario=None):
     """
     Notify
     Args:
@@ -333,7 +332,7 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
         src = ocr if isinstance(ocr, str) else ocr['ocr']
         image = {'placement': 'hero', 'src': src}
     notification = notify(title, body, on_click, icon, image,
-                          progress, audio, dialogue, duration, input, inputs, selection, selections, button, buttons, xml, app_id)
+                          progress, audio, dialogue, duration, input, inputs, selection, selections, button, buttons, xml, app_id,scenario)
     loop = asyncio.get_running_loop()
     futures = []
 
