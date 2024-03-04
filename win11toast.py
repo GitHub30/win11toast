@@ -380,7 +380,26 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
 
 
 def toast(*args, **kwargs):
-    return asyncio.run(toast_async(*args, **kwargs))
+    toast_coroutine = toast_async(*args, **kwargs)
+
+    # check if there is an existing loop
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(toast_coroutine)
+    else:
+        future = asyncio.Future()
+        task = loop.create_task(toast_coroutine)
+
+        def on_done(t):
+            if t.exception() is not None:
+                future.set_exception(t.exception())
+            else:
+                future.set_result(t.result())
+
+        task.add_done_callback(on_done)
+        return future
+        
 
 
 def update_progress(progress, app_id=DEFAULT_APP_ID):
