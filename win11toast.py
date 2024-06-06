@@ -243,7 +243,7 @@ def available_recognizer_languages():
     print('Add-WindowsCapability -Online -Name "Language.OCR~~~en-US~0.0.1.0"')
 
 
-def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, scenario=None):
+def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, scenario=None, tag=None, group=None):
     document = XmlDocument()
     document.load_xml(xml.format(scenario=scenario if scenario else 'default'))
     if isinstance(on_click, str):
@@ -295,6 +295,10 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
         data.sequence_number = 1
         notification.data = data
         notification.tag = 'my_tag'
+    if tag:
+        notification.tag = tag
+    if group:
+        notification.group = group
     if app_id == DEFAULT_APP_ID:
         try:
             notifier = ToastNotificationManager.create_toast_notifier()
@@ -306,7 +310,7 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
     return notification
 
 
-async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, ocr=None, on_dismissed=print, on_failed=print, scenario=None):
+async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, ocr=None, on_dismissed=print, on_failed=print, scenario=None, tag=None, group=None):
     """
     Notify
     Args:
@@ -332,7 +336,7 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
         src = ocr if isinstance(ocr, str) else ocr['ocr']
         image = {'placement': 'hero', 'src': src}
     notification = notify(title, body, on_click, icon, image,
-                          progress, audio, dialogue, duration, input, inputs, selection, selections, button, buttons, xml, app_id,scenario)
+                          progress, audio, dialogue, duration, input, inputs, selection, selections, button, buttons, xml, app_id, scenario, tag, group)
     loop = asyncio.get_running_loop()
     futures = []
 
@@ -402,7 +406,7 @@ def toast(*args, **kwargs):
         
 
 
-def update_progress(progress, app_id=DEFAULT_APP_ID):
+def update_progress(progress, app_id=DEFAULT_APP_ID, tag='my_tag'):
     data = NotificationData()
     for name, value in progress.items():
         data.values[name] = str(value)
@@ -414,4 +418,22 @@ def update_progress(progress, app_id=DEFAULT_APP_ID):
             notifier = ToastNotificationManager.create_toast_notifier(app_id)
     else:
         notifier = ToastNotificationManager.create_toast_notifier(app_id)
-    return notifier.update(data, 'my_tag')
+    return notifier.update(data, tag)
+
+
+def clear_toast(app_id=DEFAULT_APP_ID, tag=None, group=None):
+    # Get the notification history
+    history = ToastNotificationManager.history
+
+    if tag is None and group is None:
+        # Clear all notifications
+        history.clear(app_id)
+    elif tag is not None and not group:
+        # Cannot remove notification only using tag. Group is required.
+        raise AttributeError('group value is required to clear a toast')
+    elif tag is not None and group is not None:
+        # Remove notification by tag and group
+        history.remove(tag, group, app_id)
+    elif tag is None and group is not None:
+        # Remove all notifications in the group
+        history.remove_group(group, app_id)
