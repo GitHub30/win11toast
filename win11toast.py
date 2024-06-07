@@ -1,4 +1,5 @@
 import asyncio
+from pathlib import Path
 from winsdk.windows.data.xml.dom import XmlDocument
 from winsdk.windows.foundation import IPropertyValue
 from winsdk.windows.ui.notifications import (
@@ -280,6 +281,8 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
     if audio:
         if isinstance(audio, str) and audio.startswith('ms'):
             add_audio(audio, document)
+        elif isinstance(audio, str) and (path := Path(audio)).is_file():   
+            add_audio(f"file:///{path.absolute().as_posix()}", document)
         elif isinstance(audio, dict) and 'src' in audio and audio['src'].startswith('ms'):
             add_audio(audio, document)
         else:
