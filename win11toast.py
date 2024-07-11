@@ -166,7 +166,7 @@ def activated_args(_, event):
     global result
     e = ToastActivatedEventArgs._from(event)
     user_input = dict([(name, IPropertyValue._from(
-        e.user_input[name]).get_string()) for name in e.user_input])
+        e.user_input[name]).get_string()) for name in e.user_input()])
     result = {
         'arguments': e.arguments,
         'user_input': user_input
@@ -201,7 +201,7 @@ async def speak(text):
 
     stream = await SpeechSynthesizer().synthesize_text_to_stream_async(text)
     player = MediaPlayer()
-    player.source = MediaSource.create_from_stream(stream, stream.content_type)
+    player.source = MediaSource.create_from_stream(stream, stream.content_type())
     player.play()
     await asyncio.sleep(7)
 
@@ -416,6 +416,10 @@ def toast(*args, **kwargs):
 
         task.add_done_callback(on_done)
         return future
+
+
+async def atoast(*args, **kwargs):
+    return await toast_async(*args, **kwargs)
 
 
 def update_progress(progress, app_id=DEFAULT_APP_ID, tag='my_tag'):
