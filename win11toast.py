@@ -312,9 +312,9 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
         try:
             notifier = ToastNotificationManager.create_toast_notifier()
         except Exception as e:
-            notifier = ToastNotificationManager.create_toast_notifier(app_id)
+            notifier = ToastNotificationManager.create_toast_notifier_with_id(app_id)
     else:
-        notifier = ToastNotificationManager.create_toast_notifier(app_id)
+        notifier = ToastNotificationManager.create_toast_notifier_with_id(app_id)
     notifier.show(notification)
     return notification
 
