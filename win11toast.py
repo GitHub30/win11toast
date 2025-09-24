@@ -1,8 +1,8 @@
 import asyncio
 from pathlib import Path
-from winsdk.windows.data.xml.dom import XmlDocument
-from winsdk.windows.foundation import IPropertyValue
-from winsdk.windows.ui.notifications import (
+from winrt.windows.data.xml.dom import XmlDocument
+from winrt.windows.foundation import IPropertyValue
+from winrt.windows.ui.notifications import (
     ToastNotificationManager,
     ToastNotification,
     NotificationData,
@@ -152,18 +152,21 @@ def add_selection(selection, document):
             selection_element.set_attribute(name, value)
         input.append_child(selection_element)
 
+
 result = list()
+
 
 def result_wrapper(*args):
     global result
     result = args
     return result
 
+
 def activated_args(_, event):
     global result
     e = ToastActivatedEventArgs._from(event)
     user_input = dict([(name, IPropertyValue._from(
-        e.user_input[name]).get_string()) for name in e.user_input])
+        e.user_input[name]).get_string()) for name in e.user_input()])
     result = {
         'arguments': e.arguments,
         'user_input': user_input
@@ -172,14 +175,14 @@ def activated_args(_, event):
 
 
 async def play_sound(audio):
-    from winsdk.windows.media.core import MediaSource
-    from winsdk.windows.media.playback import MediaPlayer
+    from winrt.windows.media.core import MediaSource
+    from winrt.windows.media.playback import MediaPlayer
 
     if audio.startswith('http'):
-        from winsdk.windows.foundation import Uri
+        from winrt.windows.foundation import Uri
         source = MediaSource.create_from_uri(Uri(audio))
     else:
-        from winsdk.windows.storage import StorageFile
+        from winrt.windows.storage import StorageFile
         file = await StorageFile.get_file_from_path_async(audio)
         source = MediaSource.create_from_storage_file(file)
 
@@ -190,43 +193,44 @@ async def play_sound(audio):
 
 
 async def speak(text):
-    from winsdk.windows.media.core import MediaSource
-    from winsdk.windows.media.playback import MediaPlayer
-    from winsdk.windows.media.speechsynthesis import SpeechSynthesizer
+    from winrt.windows.media.core import MediaSource
+    from winrt.windows.media.playback import MediaPlayer
+    from winrt.windows.media.speechsynthesis import SpeechSynthesizer
 
     # print(list(map(lambda info: info.description, SpeechSynthesizer.get_all_voices())))
 
     stream = await SpeechSynthesizer().synthesize_text_to_stream_async(text)
     player = MediaPlayer()
-    player.source = MediaSource.create_from_stream(stream, stream.content_type)
+    player.source = MediaSource.create_from_stream(stream, stream.content_type())
     player.play()
     await asyncio.sleep(7)
 
 
 async def recognize(ocr):
-    from winsdk.windows.media.ocr import OcrEngine
-    from winsdk.windows.graphics.imaging import BitmapDecoder
+    from winrt.windows.media.ocr import OcrEngine
+    from winrt.windows.graphics.imaging import BitmapDecoder
     if isinstance(ocr, str):
         ocr = {'ocr': ocr}
     if ocr['ocr'].startswith('http'):
-        from winsdk.windows.foundation import Uri
-        from winsdk.windows.storage.streams import RandomAccessStreamReference
+        from winrt.windows.foundation import Uri
+        from winrt.windows.storage.streams import RandomAccessStreamReference
         ref = RandomAccessStreamReference.create_from_uri(Uri(ocr['ocr']))
         stream = await ref.open_read_async()
     else:
-        from winsdk.windows.storage import StorageFile, FileAccessMode
+        from winrt.windows.storage import StorageFile, FileAccessMode
         file = await StorageFile.get_file_from_path_async(ocr['ocr'])
         stream = await file.open_async(FileAccessMode.READ)
     decoder = await BitmapDecoder.create_async(stream)
     bitmap = await decoder.get_software_bitmap_async()
     if 'lang' in ocr:
-        from winsdk.windows.globalization import Language
+        from winrt.windows.globalization import Language
         if OcrEngine.is_language_supported(Language(ocr['lang'])):
             engine = OcrEngine.try_create_from_language(Language(ocr['lang']))
         else:
             class UnsupportedOcrResult:
                 def __init__(self):
                     self.text = 'Please install. Get-WindowsCapability -Online -Name "Language.OCR*"'
+
             return UnsupportedOcrResult()
     else:
         engine = OcrEngine.try_create_from_user_profile_languages()
@@ -236,7 +240,7 @@ async def recognize(ocr):
 
 
 def available_recognizer_languages():
-    from winsdk.windows.media.ocr import OcrEngine
+    from winrt.windows.media.ocr import OcrEngine
     for language in OcrEngine.get_available_recognizer_languages():
         print(language.display_name, language.language_tag)
     print('Run as Administrator')
@@ -244,7 +248,9 @@ def available_recognizer_languages():
     print('Add-WindowsCapability -Online -Name "Language.OCR~~~en-US~0.0.1.0"')
 
 
-def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, scenario=None, tag=None, group=None):
+def notify(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None,
+           duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml,
+           app_id=DEFAULT_APP_ID, scenario=None, tag=None, group=None):
     document = XmlDocument()
     document.load_xml(xml.format(scenario=scenario if scenario else 'default'))
     if isinstance(on_click, str):
@@ -281,7 +287,7 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
     if audio:
         if isinstance(audio, str) and audio.startswith('ms'):
             add_audio(audio, document)
-        elif isinstance(audio, str) and (path := Path(audio)).is_file():   
+        elif isinstance(audio, str) and (path := Path(audio)).is_file():
             add_audio(f"file:///{path.absolute().as_posix()}", document)
         elif isinstance(audio, dict) and 'src' in audio and audio['src'].startswith('ms'):
             add_audio(audio, document)
@@ -306,14 +312,17 @@ def notify(title=None, body=None, on_click=print, icon=None, image=None, progres
         try:
             notifier = ToastNotificationManager.create_toast_notifier()
         except Exception as e:
-            notifier = ToastNotificationManager.create_toast_notifier(app_id)
+            notifier = ToastNotificationManager.create_toast_notifier_with_id(app_id)
     else:
-        notifier = ToastNotificationManager.create_toast_notifier(app_id)
+        notifier = ToastNotificationManager.create_toast_notifier_with_id(app_id)
     notifier.show(notification)
     return notification
 
 
-async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None, dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None, buttons=[], xml=xml, app_id=DEFAULT_APP_ID, ocr=None, on_dismissed=print, on_failed=print, scenario=None, tag=None, group=None):
+async def toast_async(title=None, body=None, on_click=print, icon=None, image=None, progress=None, audio=None,
+                      dialogue=None, duration=None, input=None, inputs=[], selection=None, selections=[], button=None,
+                      buttons=[], xml=xml, app_id=DEFAULT_APP_ID, ocr=None, on_dismissed=print, on_failed=print,
+                      scenario=None, tag=None, group=None):
     """
     Notify
     Args:
@@ -339,7 +348,8 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
         src = ocr if isinstance(ocr, str) else ocr['ocr']
         image = {'placement': 'hero', 'src': src}
     notification = notify(title, body, on_click, icon, image,
-                          progress, audio, dialogue, duration, input, inputs, selection, selections, button, buttons, xml, app_id, scenario, tag, group)
+                          progress, audio, dialogue, duration, input, inputs, selection, selections, button, buttons,
+                          xml, app_id, scenario, tag, group)
     loop = asyncio.get_running_loop()
     futures = []
 
@@ -406,7 +416,10 @@ def toast(*args, **kwargs):
 
         task.add_done_callback(on_done)
         return future
-        
+
+
+async def atoast(*args, **kwargs):
+    return await toast_async(*args, **kwargs)
 
 
 def update_progress(progress, app_id=DEFAULT_APP_ID, tag='my_tag'):

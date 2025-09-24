@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='win11toast',
-    version='0.35',
+    version='0.36.1',
     description='Toast notifications for Windows 10 and 11',
     long_description=open('README.md', encoding='utf-8').read(),
     long_description_content_type='text/markdown',
@@ -19,7 +19,20 @@ setup(
         'Operating System :: Microsoft :: Windows :: Windows 10',
         'Operating System :: Microsoft :: Windows :: Windows 11'
     ],
-    install_requires=['winsdk'],
+    install_requires=[
+        'winrt-Windows.Data.Xml.Dom',
+        'winrt-Windows.Foundation',
+        'winrt.windows.Foundation.Collections',
+        'winrt-Windows.Globalization',
+        'winrt-Windows.Graphics.Imaging',
+        'winrt-Windows.Media.Core',
+        'winrt-Windows.Media.Ocr',
+        'winrt-Windows.Media.Playback',
+        'winrt-Windows.Media.Speechsynthesis',
+        'winrt-Windows.Storage',
+        'winrt-Windows.Storage.Streams',
+        'winrt-Windows.UI.Notifications'
+    ],
     py_modules=['win11toast']
 )
 
