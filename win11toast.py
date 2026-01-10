@@ -166,7 +166,7 @@ def activated_args(_, event):
     global result
     e = ToastActivatedEventArgs._from(event)
     user_input = dict([(name, IPropertyValue._from(
-        e.user_input[name]).get_string()) for name in e.user_input()])
+        e.user_input[name]).get_string()) for name in e.user_input])
     result = {
         'arguments': e.arguments,
         'user_input': user_input
@@ -393,7 +393,6 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
             notification.remove_dismissed(dismissed_token)
         if failed_token is not None:
             notification.remove_failed(failed_token)
-        return result
 
 
 def toast(*args, **kwargs):
