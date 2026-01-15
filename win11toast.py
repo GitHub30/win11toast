@@ -166,7 +166,7 @@ def activated_args(_, event):
     global result
     e = ToastActivatedEventArgs._from(event)
     user_input = dict([(name, IPropertyValue._from(
-        e.user_input[name]).get_string()) for name in e.user_input()])
+        e.user_input[name]).get_string()) for name in e.user_input])
     result = {
         'arguments': e.arguments,
         'user_input': user_input
