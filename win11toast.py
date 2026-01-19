@@ -393,7 +393,6 @@ async def toast_async(title=None, body=None, on_click=print, icon=None, image=No
             notification.remove_dismissed(dismissed_token)
         if failed_token is not None:
             notification.remove_failed(failed_token)
-        return result
 
 
 def toast(*args, **kwargs):
