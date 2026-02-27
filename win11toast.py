@@ -431,10 +431,10 @@ def update_progress(progress, app_id=DEFAULT_APP_ID, tag='my_tag'):
         try:
             notifier = ToastNotificationManager.create_toast_notifier()
         except Exception as e:
-            notifier = ToastNotificationManager.create_toast_notifier(app_id)
+            notifier = ToastNotificationManager.create_toast_notifier_with_id(app_id)
     else:
-        notifier = ToastNotificationManager.create_toast_notifier(app_id)
-    return notifier.update(data, tag)
+        notifier = ToastNotificationManager.create_toast_notifier_with_id(app_id)
+    return notifier.update_with_tag(data, tag)
 
 
 def clear_toast(app_id=DEFAULT_APP_ID, tag=None, group=None):
