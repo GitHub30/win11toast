@@ -431,10 +431,10 @@ def update_progress(progress, app_id=DEFAULT_APP_ID, tag='my_tag'):
         try:
             notifier = ToastNotificationManager.create_toast_notifier()
         except Exception as e:
-            notifier = ToastNotificationManager.create_toast_notifier(app_id)
+            notifier = ToastNotificationManager.create_toast_notifier_with_id(app_id)
     else:
-        notifier = ToastNotificationManager.create_toast_notifier(app_id)
-    return notifier.update(data, tag)
+        notifier = ToastNotificationManager.create_toast_notifier_with_id(app_id)
+    return notifier.update_with_tag(data, tag)
 
 
 def clear_toast(app_id=DEFAULT_APP_ID, tag=None, group=None):
@@ -443,13 +443,13 @@ def clear_toast(app_id=DEFAULT_APP_ID, tag=None, group=None):
 
     if tag is None and group is None:
         # Clear all notifications
-        history.clear(app_id)
+        history.clear_with_id(app_id)
     elif tag is not None and not group:
         # Cannot remove notification only using tag. Group is required.
         raise AttributeError('group value is required to clear a toast')
     elif tag is not None and group is not None:
         # Remove notification by tag and group
-        history.remove(tag, group, app_id)
+        history.remove_grouped_tag_with_id(tag, group, app_id)
     elif tag is None and group is not None:
         # Remove all notifications in the group
-        history.remove_group(group, app_id)
+        history.remove_group_with_id(group, app_id)
