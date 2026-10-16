@@ -201,7 +201,7 @@ async def speak(text):
 
     stream = await SpeechSynthesizer().synthesize_text_to_stream_async(text)
     player = MediaPlayer()
-    player.source = MediaSource.create_from_stream(stream, stream.content_type())
+    player.source = MediaSource.create_from_stream(stream, stream.content_type)
     player.play()
     await asyncio.sleep(7)
 
